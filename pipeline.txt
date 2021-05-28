@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    options {
+         // This is required if you want to clean before build
+        skipDefaultCheckout(true)
+    }
+    stages {
+        
+        stage('Checkout code') {
+            steps {
+				echo "[Projet ${env.JOB_NAME}] - Lancement du build: ${env.BUILD_DISPLAY_NAME} par ${env.NODE_NAME}"
+                
+                // Clean before all
+                cleanWs()
+                
+                git branch: 'main', url: 'https://github.com/apalpant/tp-j9.git'
+            }
+        }
+		
+		stage('Init') {
+            steps {				
+                script {
+                    env.GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%s ${GIT_COMMIT}', returnStdout: true).trim()
+                    env.GIT_COMMIT_NB = sh (script: 'git log -1 --pretty=%h ${GIT_COMMIT}', returnStdout: true).trim()
+                    env.GIT_AUTHOR = sh (script: 'git log -1 --pretty=%an ${GIT_COMMIT}', returnStdout: true).trim()
+                    env.GIT_AUTHOR_MAIL = sh (script: 'git log -1 --pretty=%ae ${GIT_COMMIT}', returnStdout: true).trim()
+                }
+                
+                echo "[Projet ${env.JOB_NAME}] - Git commit #${env.GIT_COMMIT_NB} \"${env.GIT_COMMIT_MSG}\" @author: ${env.GIT_AUTHOR_MAIL} (${env.GIT_AUTHOR})"
+            }
+        }
+       
+        stage('Install dependencies') {
+            steps {
+                sh 'python3 -m venv venv'
+                sh '. venv/bin/activate'
+                sh 'python3 -m pip install -r src/requirements.txt'
+            }   
+        }
+    }
+}
+    

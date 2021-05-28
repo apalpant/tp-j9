@@ -2,10 +2,10 @@
 
 apt update
 
-apt install ansible
+apt install -y ansible
 
 # On installe le pare-feu
-apt install ufw
+apt install -y ufw
 
 # On le met en route
 ufw --force enable 
@@ -60,7 +60,7 @@ systemctl restart sshd
 apt install git
 
 # install python
-apt install python3 python3-dev python3-pip -q -y
+apt install python3 python3-dev python3-pip python3-venv -q -y
 apt remove -y python 
 
 cp /usr/bin/python3 /usr/bin/python
