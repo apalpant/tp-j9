@@ -14,7 +14,4 @@ RUN pip install -r requirements.txt
 # Copie du docker intermediaire vers le courant
 COPY . .
 
-# Regle de "pare-feu" => on expose le port 5000 => - ports : - 5000:5000 dans le docker-compose
-EXPOSE 5000
-
 CMD ["flask", "run"]
