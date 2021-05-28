@@ -39,7 +39,7 @@ pipeline {
             steps {
                 sh 'python3 -m venv venv'
                 sh '. venv/bin/activate'
-                sh 'python3 -m pip install -r ${SRC}/requirements.txt'
+                sh 'python3 -m pip install -r jenkins_requirements.txt'
             }   
         }
         
@@ -60,7 +60,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker build -t built_by_jenkins ./src'
-                    sh 'docker run --rm built_by_jenkins'
+                    sh 'docker run -d -p 80:5000 --rm built_by_jenkins'
                 }
             }
         }
