@@ -11,6 +11,7 @@ Vagrant.configure("2") do |config|
 			vb.name = "controller"
 		end
 		controller.vm.provision "shell", path: "provision.sh"
+		controller.vm.synced_folder 'shared', '/home/shared'
 	end
 		
 	# Iterating the loop for two times

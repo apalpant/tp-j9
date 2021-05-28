@@ -3,13 +3,12 @@ pipeline {
     options {
          // This is required if you want to clean before build
         skipDefaultCheckout(true)
-        
-        // dockerfile true
     }
+    
     environment {
         SRC = "${WORKSPACE}/src"
     }
-
+    
     stages {
         
         stage('Checkout code') {
@@ -31,8 +30,6 @@ pipeline {
                     env.GIT_AUTHOR = sh (script: 'git log -1 --pretty=%an ${GIT_COMMIT}', returnStdout: true).trim()
                     env.GIT_AUTHOR_MAIL = sh (script: 'git log -1 --pretty=%ae ${GIT_COMMIT}', returnStdout: true).trim()
                 }
-                
-                echo "SRC ${SRC}"
                 
                 echo "[Projet ${env.JOB_NAME}] - Git commit #${env.GIT_COMMIT_NB} \"${env.GIT_COMMIT_MSG}\" @author: ${env.GIT_AUTHOR_MAIL} (${env.GIT_AUTHOR})"
             }
@@ -62,9 +59,8 @@ pipeline {
         stage('Docker') {
             steps {
                 script {
-                    // sh 'sudo docker build -t built_by_jenkins ${SRC}'
-                    // docker.build(src)
-                    echo "echo"
+                    sh 'docker build -t built_by_jenkins ./src'
+                    sh 'docker run --rm built_by_jenkins'
                 }
             }
         }
