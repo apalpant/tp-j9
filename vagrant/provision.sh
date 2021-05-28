@@ -15,6 +15,7 @@ ufw allow ssh
 ufw allow http
 ufw allow https
 ufw allow 8080
+ufw allow 5000
 
 # On prepare l'installation de jenkins
 apt install -y gnupg

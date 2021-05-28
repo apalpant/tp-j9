@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exo 3</title>
+    <title>Hash service</title>
 </head>
 <body>
-    <h1>Exo 3</h1>
-    <form method="POST">
-        <input type="text" name="name" />
+    <h1>Hash service</h1>
+    <form action="/md5" method="POST">
+		<label>Convertir en md5</label>
+        <input type="text" name="param" />
+        <input type="submit" />
+    </form>
+	<form action="/sha256" method="POST">
+		<label>Convertir en sha256</label>
+        <input type="text" name="param" />
         <input type="submit" />
     </form>
 </body>
