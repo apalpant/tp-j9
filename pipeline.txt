@@ -34,7 +34,7 @@ pipeline {
             steps {
                 sh 'python3 -m venv venv'
                 sh '. venv/bin/activate'
-                sh 'python3 -m pip install -r src/requirements.txt'
+                sh 'python3 -m pip install -r ${WORKSPACE}/src/requirements.txt'
             }   
         }
     }
