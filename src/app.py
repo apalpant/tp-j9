@@ -19,7 +19,7 @@ def get_md5():
 
     return render_template('index.html')
     
-@app.route("/sha256", methods=[GET', 'POST'])
+@app.route("/sha256", methods=['GET', 'POST'])
 def get_sha256():
     if request.method == 'POST':
         param = request.form['param']
