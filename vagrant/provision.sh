@@ -83,6 +83,9 @@ apt-get install -y docker-ce docker-ce-cli containerd.io
 
 usermod -aG docker $USER
 
+# On ajoute jenkins aux utilisateurs authorises
+usermod -aG docker userjob
+
 ### Docker compose ###
 
 curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose

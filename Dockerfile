@@ -7,7 +7,7 @@ ENV FLASK_RUN_HOST=0.0.0.0
 # Optimisation
 RUN apk add --no-cache gcc musl-dev linux-headers
 
-COPY requirements.txt .
+COPY src/requirements.txt .
 
 RUN pip install -r requirements.txt
 
