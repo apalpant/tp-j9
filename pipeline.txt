@@ -3,7 +3,13 @@ pipeline {
     options {
          // This is required if you want to clean before build
         skipDefaultCheckout(true)
+        
+        // dockerfile true
     }
+    environment {
+        SRC = "${WORKSPACE}/src"
+    }
+
     stages {
         
         stage('Checkout code') {
@@ -26,16 +32,37 @@ pipeline {
                     env.GIT_AUTHOR_MAIL = sh (script: 'git log -1 --pretty=%ae ${GIT_COMMIT}', returnStdout: true).trim()
                 }
                 
+                echo "SRC ${SRC}"
+                
                 echo "[Projet ${env.JOB_NAME}] - Git commit #${env.GIT_COMMIT_NB} \"${env.GIT_COMMIT_MSG}\" @author: ${env.GIT_AUTHOR_MAIL} (${env.GIT_AUTHOR})"
             }
         }
        
-        stage('Install dependencies') {
+        stage('Installation des dependences') {
             steps {
                 sh 'python3 -m venv venv'
                 sh '. venv/bin/activate'
-                sh 'python3 -m pip install -r ${WORKSPACE}/src/requirements.txt'
+                sh 'python3 -m pip install -r ${SRC}/requirements.txt'
             }   
+        }
+        
+        stage('Controle qualite') {
+            steps {
+                // Run virtual environment
+                sh '. venv/bin/activate'
+                
+                // Run Pylint.
+                sh 'python3 -m pylint -f parseable ${SRC} | tee pylint.report'
+
+                // Run Pycodestyle (PEP8 checks).
+                 sh 'python3 -m pycodestyle ${SRC} | tee pep8.report'
+            }
+        }
+        
+        stage('Docker') {
+            steps {
+                sh 'docker build -t built_by_jenkins ${SRC}'
+            }
         }
     }
 }
